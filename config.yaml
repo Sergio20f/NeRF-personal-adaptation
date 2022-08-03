@@ -1,0 +1,31 @@
+paths:
+  dataset: 1
+  train_json: 1
+  val_json: 1
+  test_json: 1
+  img_path: 1
+  coarse_path: 1
+  fine_path: 1
+  video_path: 1
+img_features:
+  img_width: 1
+  img_height: 1
+  near: 1
+  far: 1
+train:
+  batch_size: 1
+  l_coor: 1
+  l_dir: 1
+  dense_units: 1
+  skip_layer: 1
+  n_c: 1
+  n_f: 1
+  steps_per_epoch: 1
+  validation_steps: 1
+  epochs: 1
+inference:
+  sample_theta_points: 1
+video:
+  fps: 1
+  quality: 1
+  macro_block_size: 1
