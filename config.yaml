@@ -1,16 +1,16 @@
 # Skipping: AUTO, video config
 paths:
-    dataset: nerf_synthetic/lego
-    train_json: nerf_synthetic/lego/transforms_train.json
-    val_json: nerf_synthetic/lego/transforms_val.json
-    test_json: nerf_synthetic/lego/transforms_test.json
-    img_path: nerf_synthetic/lego/train/
+    dataset: ship
+    train_json: ship/transforms_train.json
+    val_json: ship/transforms_val.json
+    test_json: ship/transforms_test.json
+    img_path: ship/train/
     coarse_path: model/coarse/
     fine_path: model/fine/
     video_path: model/
 img_features:
-    img_width: 800
-    img_height: 800
+    img_width: 100
+    img_height: 100
     near: 2.0
     far: 6.0
 train:

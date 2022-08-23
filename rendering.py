@@ -29,14 +29,15 @@ class Rays:
         y_cam = (y - self.height * 0.5) / self.f_length
 
         # Camera vector
-        cam_vector = tf.stack([x_cam, -y_cam, -tf.ones_like(x)], axis=1)
-
+        cam_vector = tf.stack([x_cam, -y_cam, -tf.ones_like(x)], axis=-1)
+        print(cam_vector.shape)
         # Split the camera vector into rotation and translation matrices
         r_matrix = c2w[:3, :3]
         t_matrix = c2w[:3, -1]
 
         # Change cam_vector dimensions for matrix multiplication
-        cam_vector = cam_vector[..., None, :3]  # not 3, maybe make (800, 800, None, 3) instead
+        cam_vector = cam_vector[..., None, :]  # not 3, maybe make (800, 800, None, 3) instead
+        print(cam_vector.shape, r_matrix.shape)
         world_vector = cam_vector * r_matrix
 
         # 1. Direction of the rays

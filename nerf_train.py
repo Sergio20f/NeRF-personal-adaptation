@@ -51,7 +51,7 @@ class NeRF_Trainer(tf.keras.Model):
         t_mid = (0.5 * (t_c[..., 1:] + t_c[..., :-1]))
 
         # Apply hierarchical sampling and get the input for the fine network
-        t_f = self.sample_pdf(t_mid=t_mid, weights=weights_c, n_f=self.n_f)
+        t_f = self.sample_pdf(t_mids=t_mid, weights=weights_c, n_f=self.n_f)
         t_f = tf.sort(tf.concat([t_c, t_f], axis=-1), axis=-1)
 
         # Rays for the fine network
