@@ -1,3 +1,4 @@
+# Extra functions needed:
 import tensorflow as tf
 import os
 import numpy as np
@@ -7,7 +8,7 @@ from tqdm import tqdm
 from tensorflow.keras.models import load_model
 
 from config_loader import config
-from utils import get_focal_from_fow, read_json, pose_spherical
+from utils import get_focal_from_fov, read_json, pose_spherical
 from enhancers import hier_sampling, pos_encoding
 from rendering import Rays, volume_render
 
@@ -19,7 +20,8 @@ for theta in np.linspace(0, 360, config.SAMPLE_THETA_POINTS, endpoint=False):
     novel_c2w.append(c2w)
 
 train_data = read_json(config.TRAIN_JSON)
-f_length = get_focal_from_fow(field_of_view=train_data["camera_angle_x"], width=config.IMG_WIDTH)
+
+f_length = get_focal_from_fov(field_of_view=train_data["camera_angle_x"], width=config.IMG_WIDTH)
 
 rays = Rays(f_length=f_length, width=config.IMG_WIDTH, height=config.IMG_HEIGHT, near_bound=config.NEAR,
             far_bound=config.FAR, nC=config.N_C)
@@ -30,17 +32,18 @@ dataset = tf.data.Dataset.from_tensor_slices(novel_c2w).map(rays).batch(config.B
 coarse = load_model(config.COARSE_PATH, compile=False)
 fine = load_model(config.FINE_PATH, compile=False)
 
-# List to store all the novelviews from NeRF
+# List to store all the novel views from NeRF
 frames = []
 for i in tqdm(dataset):
     rays_or_c, rays_dir_c, t_c = i
+
     rays_c = rays_or_c[..., None, :] + (rays_dir_c[..., None, :] * t_c[..., None])
 
     # Positional encoding
     rays_c = pos_encoding(rays_c, config.L_COOR)
     dir_c_shape = tf.shape(rays_c[..., :3])
     dir_c = tf.broadcast_to(rays_dir_c[..., None, :], shape=dir_c_shape)
-    dir_c = pos_encoding(dir_c, config.L_COOR)
+    dir_c = pos_encoding(dir_c, config.L_DIR)
 
     # Predictions from coarse model
     rgb_c, sigma_c = coarse.predict([rays_c, dir_c])
@@ -51,9 +54,9 @@ for i in tqdm(dataset):
     # Middle values of t
     t_c_mid = 0.5 * (t_c[..., 1:] + t_c[..., :-1])
 
-    # Hierarchichal sampling
+    # Hierarchical sampling
     t_f = hier_sampling(t_mids=t_c_mid, weights=weights_c, n_f=config.N_F)
-    t_f = tf.sort(tf.concat([t_c. t_f], axis=-1), axis=-1)
+    t_f = tf.sort(tf.concat([t_c, t_f], axis=-1), axis=-1)
 
     # Build fine rays + pos_encoding
     rays_f = rays_or_c[..., None, :] + (rays_dir_c[..., None, :] * t_f[..., None])

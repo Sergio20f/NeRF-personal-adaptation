@@ -21,7 +21,7 @@ def img_c2w(json_data, path):
 
         c2w.append(i["transform_matrix"])
 
-    return img_path, c2w
+    return images, c2w
 
 
 class GetImages:
@@ -42,7 +42,7 @@ class GetImages:
         return image
 
 
-def get_focal_from_fow(field_of_view, width): return 0.5 * width / tf.tan(0.5 * field_of_view)
+def get_focal_from_fov(field_of_view, width): return 0.5 * width / tf.tan(0.5 * field_of_view)
 
 
 def get_translation_t(t):
@@ -53,7 +53,6 @@ def get_translation_t(t):
         [0, 0, 0, 1],
     ]
     matrix = tf.convert_to_tensor(matrix, dtype=tf.float32)
-
     return matrix
 
 
@@ -65,7 +64,6 @@ def get_rotation_phi(phi):
         [0, 0, 0, 1],
     ]
     matrix = tf.convert_to_tensor(matrix, dtype=tf.float32)
-
     return matrix
 
 
@@ -76,12 +74,13 @@ def get_rotation_theta(theta):
         [tf.sin(theta), 0, tf.cos(theta), 0],
         [0, 0, 0, 1],
     ]
+    matrix = tf.convert_to_tensor(matrix, dtype=tf.float32)
+    return matrix
 
 
 def pose_spherical(theta, phi, t):
     c2w = get_translation_t(t)
-    c2w = get_rotation_phi(phi/180.0 * np.pi) @ c2w
-    c2w = get_rotation_theta(theta/180.0 * np.pi) @ c2w
+    c2w = get_rotation_phi(phi / 180.0 * np.pi) @ c2w
+    c2w = get_rotation_theta(theta / 180.0 * np.pi) @ c2w
     c2w = np.array([[-1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]]) @ c2w
-
     return c2w

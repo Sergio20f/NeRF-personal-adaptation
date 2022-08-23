@@ -1,31 +1,32 @@
+# Skipping: AUTO, video config
 paths:
-  dataset: 1
-  train_json: 1
-  val_json: 1
-  test_json: 1
-  img_path: 1
-  coarse_path: 1
-  fine_path: 1
-  video_path: 1
+    dataset: nerf_synthetic/lego
+    train_json: nerf_synthetic/lego/transforms_train.json
+    val_json: nerf_synthetic/lego/transforms_val.json
+    test_json: nerf_synthetic/lego/transforms_test.json
+    img_path: nerf_synthetic/lego/train/
+    coarse_path: model/coarse/
+    fine_path: model/fine/
+    video_path: model/
 img_features:
-  img_width: 1
-  img_height: 1
-  near: 1
-  far: 1
+    img_width: 800
+    img_height: 800
+    near: 2.0
+    far: 6.0
 train:
-  batch_size: 1
-  l_coor: 1
-  l_dir: 1
-  dense_units: 1
-  skip_layer: 1
-  n_c: 1
-  n_f: 1
-  steps_per_epoch: 1
-  validation_steps: 1
-  epochs: 1
+    batch_size: 5
+    l_coor: 8
+    l_dir: 4
+    dense_units: 256
+    skip_layer: 4
+    n_c: 64
+    n_f: 128
+    steps_per_epoch: 50
+    validation_steps: 5
+    epochs: 20
 inference:
-  sample_theta_points: 1
+    sample_theta_points: 32
 video:
-  fps: 1
-  quality: 1
-  macro_block_size: 1
+    fps: 30
+    quality: 10
+    macro_block_size: 16

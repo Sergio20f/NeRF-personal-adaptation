@@ -10,7 +10,7 @@ class Config:
 
         self.data = data
 
-        # Paths
+        # Paths attributes
         dataset = data["paths"]["dataset"]
         self.DATASET = dataset
 
@@ -94,7 +94,7 @@ class Config:
         self.MACRO_BLOCK_SIZE = macro_block_size
 
         pass
-        # + Data input pipeline
+    # Data input pipeline
 
 
 config = Config("config.yaml")
