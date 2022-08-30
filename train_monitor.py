@@ -1,5 +1,5 @@
 import tensorflow as tf
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.preprocessing.image import array_to_img
 
@@ -46,19 +46,19 @@ def get_monitor(test_data, encoding, l_coor, l_dir, path):
             test_image_f, test_depth_f, _ = test_render_f
 
             # Plot the coarse and fine images, the depth map, and the target image
-#            _, ax = plt.subplots(nrows=1, ncols=4, figsize=(10, 10))
-#
-#           ax[0].imshow(array_to_img(test_image_c[0]))
-#           ax[0].set_title(f"Coarse Image")
-#           ax[1].imshow(array_to_img(test_image_f[0]))
-#           ax[1].set_title(f"Fine Image")
-#           ax[2].imshow(array_to_img(test_depth_f[0, ..., None]),
-#                        cmap="inferno")
-#           ax[2].set_title(f"Fine Depth Image")
-#           ax[3].imshow(array_to_img(test_images[0]))
-#           ax[3].set_title(f"Real Image")
-#           plt.savefig(f"{path}/{epoch:03d}.png")
-#           plt.close()
+            _, ax = plt.subplots(nrows=1, ncols=4, figsize=(10, 10))
+
+           ax[0].imshow(array_to_img(test_image_c[0]))
+           ax[0].set_title(f"Coarse Image")
+           ax[1].imshow(array_to_img(test_image_f[0]))
+           ax[1].set_title(f"Fine Image")
+           ax[2].imshow(array_to_img(test_depth_f[0, ..., None]),
+                        cmap="inferno")
+           ax[2].set_title(f"Fine Depth Image")
+           ax[3].imshow(array_to_img(test_images[0]))
+           ax[3].set_title(f"Real Image")
+           plt.savefig(f"{path}/{epoch:03d}.png")
+           plt.close()
 
     train_monitor = Monitor()
     return train_monitor
